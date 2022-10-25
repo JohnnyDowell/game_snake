@@ -17,6 +17,7 @@ window.onload = ()=> {
       this.dibujar();
       this.borrarUltima();
       this.cuerpo.pop();
+      this.direccion = "derecha";
     },
     avanzarALaIzquierda: function(){
       const cabeza = this.cuerpo[0];
@@ -24,6 +25,7 @@ window.onload = ()=> {
       this.dibujar();
       this.borrarUltima();
       this.cuerpo.pop();
+      this.direccion = "izquierda";
     },
     avanzarAbajo: function(){
       const cabeza = this.cuerpo[0];
@@ -31,6 +33,7 @@ window.onload = ()=> {
       this.dibujar();
       this.borrarUltima();
       this.cuerpo.pop();
+      this.direccion = "abajo";
     },
     avanzarArriba: function(){
       const cabeza = this.cuerpo[0];
@@ -38,6 +41,7 @@ window.onload = ()=> {
       this.dibujar();
       this.borrarUltima();
       this.cuerpo.pop();
+      this.direccion = "arriba";
     },
     borrarUltima: function(){
       const ultima = this.cuerpo[this.cuerpo.length-1];
@@ -45,20 +49,41 @@ window.onload = ()=> {
       const cell = document.querySelector(str);
       cell.style.backgroundColor = "lightgray";
     },
-    cuerpo : [
-      [3,1],  // Cabeza
-      [2,1],  // medio
-      [1,1], // medio
-      [0,1]  // Cola
-    ]
+    avanzarAutomaticamente: function(){
+      setInterval( ()=>{
+        switch (this.direccion) {
+          case "abajo":
+            this.avanzarAbajo();
+            break;
+          case "arriba":
+            this.avanzarArriba();
+            break;
+          case "derecha":
+            this.avanzarALaDerecha();
+            break;
+          case "izquierda":
+            this.avanzarALaIzquierda();
+            break;
+          default:
+            console.log("error");
+        }
+      }, 1000);
+    },
+    cuerpo: [
+      [3,5],  // Cabeza
+      [2,5],  // medio
+      [1,5], // medio
+      [0,5]  // Cola
+    ],
+    direccion: "abajo" // abajo - arriba- izquierda
   }
   // Inicializa El juego
   serpiente.dibujar();
   crearControles();
+  serpiente.avanzarAutomaticamente();
 };
 // Agrega Controles de movimiento con las flechas del teclado
 function crearControles(){
-  console.log(serpiente);
   document.addEventListener( 'keydown', (e)=>{
 
      if(e.code == "ArrowRight"){
