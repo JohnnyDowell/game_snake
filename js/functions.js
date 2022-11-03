@@ -1,16 +1,10 @@
 var serpiente;
 window.onload = ()=> {
-  // Crear Serpiente
+  // Crear Serpiente y Manzana
   serpiente = {
     avanceAutomatico: null,
     cuerpo: [
-      [7,5],  // Cabeza
-      [6,5],  // Cuerpo
-      [5,5],  // Cuerpo
-      [4,5],  // Cuerpo
-      [3,5],  // Cuerpo
-      [2,5],  // Cuerpo
-      [1,5],  // Cuerpo
+      [1,5],  // Cabeza
       [0,5],  // Cola
     ],
     direccion: "abajo", // abajo - arriba- izquierda - derecha
@@ -128,11 +122,43 @@ window.onload = ()=> {
       }
       return seHaMordido;
     }
-  }
+  };
+  manzana = {
+    ubicacion: [],
+    ubicacionAleatoria: function(){
+      let row = Math.floor(Math.random()*9) + 0;
+      let column = Math.floor(Math.random()*9) + 0;
+      this.ubicacion = [row,column];
+      this.interfiereConSerpiente() ? this.ubicacionAleatoria() : this.dibujar();
+    },
+    interfiereConSerpiente: ()=>{
+      interfiere = false;
+      this.serpiente.cuerpo.forEach((cuerpo, i) => {
+        if(cuerpo.join("") == manzana.ubicacion.join("")){
+          interfiere = true;
+        }
+      });
+      return interfiere;
+    },
+    dibujar: function(){
+      const renglon = this.ubicacion[0];
+      const columna = this.ubicacion[1];
+      const str = "[data-row='"+renglon+"'][data-column='"+columna+"']";
+      const cell = document.querySelector(str);
+      cell.style.backgroundColor = "orange";
+    },
+    borrar: function(){
+      if(!this.ubicacion.length) return;
+      const str = "[data-row='"+this.ubicacion[0]+"'][data-column='"+this.ubicacion[1]+"']";
+      const cell = document.querySelector(str);
+      cell.style.backgroundColor = "lightgray";
+    },
+  };
   // Inicializa El juego
-  serpiente.dibujar();
   crearControles();
+  serpiente.dibujar();
   serpiente.avanzarAutomaticamente();
+  manzana.ubicacionAleatoria();
 };
 // Agrega Controles de movimiento con las flechas del teclado
 function crearControles(){
