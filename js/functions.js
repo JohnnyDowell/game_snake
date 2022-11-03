@@ -24,8 +24,10 @@ window.onload = ()=> {
       const cabeza = this.cuerpo[0];
       this.cuerpo.unshift([ cabeza[0],cabeza[1]+1 ] );
       this.dibujar();
-      this.borrarUltima();
-      this.cuerpo.pop();
+      if(!this.comerManzana()){
+        this.borrarUltima();
+        this.cuerpo.pop();
+      }
     },
     avanzarALaIzquierda: function(){
       this.direccion = "izquierda";
@@ -34,8 +36,10 @@ window.onload = ()=> {
       const cabeza = this.cuerpo[0];
       this.cuerpo.unshift([ cabeza[0],cabeza[1]-1 ] );
       this.dibujar();
-      this.borrarUltima();
-      this.cuerpo.pop();
+      if(!this.comerManzana()){
+        this.borrarUltima();
+        this.cuerpo.pop();
+      }
     },
     avanzarAbajo: function(){
       this.direccion = "abajo";
@@ -44,8 +48,10 @@ window.onload = ()=> {
       const cabeza = this.cuerpo[0];
       this.cuerpo.unshift([ cabeza[0]+1,cabeza[1] ] );
       this.dibujar();
-      this.borrarUltima();
-      this.cuerpo.pop();
+      if(!this.comerManzana()){
+        this.borrarUltima();
+        this.cuerpo.pop();
+      }
     },
     avanzarArriba: function(){
       this.direccion = "arriba";
@@ -54,8 +60,10 @@ window.onload = ()=> {
       const cabeza = this.cuerpo[0];
       this.cuerpo.unshift([ cabeza[0]-1,cabeza[1] ] );
       this.dibujar();
-      this.borrarUltima();
-      this.cuerpo.pop();
+      if(!this.comerManzana()){
+        this.borrarUltima();
+        this.cuerpo.pop();
+      }
     },
     borrarUltima: function(){
       const ultima = this.cuerpo[this.cuerpo.length-1];
@@ -121,6 +129,14 @@ window.onload = ()=> {
         alert("seHaMordido");
       }
       return seHaMordido;
+    },
+    comerManzana: ()=>{
+      let comioManzana = false;
+      if(this.manzana.ubicacion.join("") == this.serpiente.cuerpo[0].join("")){
+        comioManzana = true;
+        this.manzana.ubicacionAleatoria();
+      }
+      return comioManzana;
     }
   };
   manzana = {
