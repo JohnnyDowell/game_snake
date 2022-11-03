@@ -2,6 +2,14 @@ var serpiente;
 window.onload = ()=> {
   // Crear Serpiente
   serpiente = {
+    avanceAutomatico: null,
+    cuerpo: [
+      [3,5],  // Cabeza
+      [2,5],  // medio
+      [1,5], // medio
+      [0,5]  // Cola
+    ],
+    direccion: "abajo", // abajo - arriba- izquierda - derecha
     dibujar: function(){
       this.cuerpo.forEach((cuadro, indexCuadro) => {
         const renglon = cuadro[0];
@@ -13,6 +21,11 @@ window.onload = ()=> {
     },
     avanzarALaDerecha: function(){
       const cabeza = this.cuerpo[0];
+      const hasChocado = cabeza[1]+1 == 10;
+      if(hasChocado){
+        this.hasChocadoConPared();
+        return;
+      }
       this.cuerpo.unshift([ cabeza[0],cabeza[1]+1 ] );
       this.dibujar();
       this.borrarUltima();
@@ -21,6 +34,11 @@ window.onload = ()=> {
     },
     avanzarALaIzquierda: function(){
       const cabeza = this.cuerpo[0];
+      const hasChocado = cabeza[1]-1 == -1;
+      if(hasChocado){
+        this.hasChocadoConPared();
+        return;
+      }
       this.cuerpo.unshift([ cabeza[0],cabeza[1]-1 ] );
       this.dibujar();
       this.borrarUltima();
@@ -29,6 +47,11 @@ window.onload = ()=> {
     },
     avanzarAbajo: function(){
       const cabeza = this.cuerpo[0];
+      const hasChocado = cabeza[0]+1 == 10;
+      if(hasChocado){
+        this.hasChocadoConPared();
+        return;
+      }
       this.cuerpo.unshift([ cabeza[0]+1,cabeza[1] ] );
       this.dibujar();
       this.borrarUltima();
@@ -37,6 +60,11 @@ window.onload = ()=> {
     },
     avanzarArriba: function(){
       const cabeza = this.cuerpo[0];
+      const hasChocado = cabeza[0]-1 == -1;
+      if(hasChocado){
+        this.hasChocadoConPared();
+        return;
+      }
       this.cuerpo.unshift([ cabeza[0]-1,cabeza[1] ] );
       this.dibujar();
       this.borrarUltima();
@@ -50,7 +78,7 @@ window.onload = ()=> {
       cell.style.backgroundColor = "lightgray";
     },
     avanzarAutomaticamente: function(){
-      setInterval( ()=>{
+      this.avanceAutomatico = setInterval( ()=>{
         switch (this.direccion) {
           case "abajo":
             this.avanzarAbajo();
@@ -69,13 +97,13 @@ window.onload = ()=> {
         }
       }, 1000);
     },
-    cuerpo: [
-      [3,5],  // Cabeza
-      [2,5],  // medio
-      [1,5], // medio
-      [0,5]  // Cola
-    ],
-    direccion: "abajo" // abajo - arriba- izquierda
+    detenerAvanzadoAutomatico: function(){
+      clearInterval(this.avanceAutomatico);
+    },
+    hasChocadoConPared: function(){
+      this.detenerAvanzadoAutomatico();
+      alert("Has perdido");
+    },
   }
   // Inicializa El juego
   serpiente.dibujar();
