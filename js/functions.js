@@ -4,10 +4,14 @@ window.onload = ()=> {
   serpiente = {
     avanceAutomatico: null,
     cuerpo: [
-      [3,5],  // Cabeza
-      [2,5],  // medio
-      [1,5], // medio
-      [0,5]  // Cola
+      [7,5],  // Cabeza
+      [6,5],  // Cuerpo
+      [5,5],  // Cuerpo
+      [4,5],  // Cuerpo
+      [3,5],  // Cuerpo
+      [2,5],  // Cuerpo
+      [1,5],  // Cuerpo
+      [0,5],  // Cola
     ],
     direccion: "abajo", // abajo - arriba- izquierda - derecha
     dibujar: function(){
@@ -20,56 +24,44 @@ window.onload = ()=> {
       });
     },
     avanzarALaDerecha: function(){
+      this.direccion = "derecha";
+      if(this.haChocadoConPared()) return;
+      if(this.seHaMordido()) return;
       const cabeza = this.cuerpo[0];
-      const hasChocado = cabeza[1]+1 == 10;
-      if(hasChocado){
-        this.hasChocadoConPared();
-        return;
-      }
       this.cuerpo.unshift([ cabeza[0],cabeza[1]+1 ] );
       this.dibujar();
       this.borrarUltima();
       this.cuerpo.pop();
-      this.direccion = "derecha";
     },
     avanzarALaIzquierda: function(){
+      this.direccion = "izquierda";
+      if(this.haChocadoConPared()) return;
+      if(this.seHaMordido()) return;
       const cabeza = this.cuerpo[0];
-      const hasChocado = cabeza[1]-1 == -1;
-      if(hasChocado){
-        this.hasChocadoConPared();
-        return;
-      }
       this.cuerpo.unshift([ cabeza[0],cabeza[1]-1 ] );
       this.dibujar();
       this.borrarUltima();
       this.cuerpo.pop();
-      this.direccion = "izquierda";
     },
     avanzarAbajo: function(){
+      this.direccion = "abajo";
+      if(this.haChocadoConPared()) return;
+      if(this.seHaMordido()) return;
       const cabeza = this.cuerpo[0];
-      const hasChocado = cabeza[0]+1 == 10;
-      if(hasChocado){
-        this.hasChocadoConPared();
-        return;
-      }
       this.cuerpo.unshift([ cabeza[0]+1,cabeza[1] ] );
       this.dibujar();
       this.borrarUltima();
       this.cuerpo.pop();
-      this.direccion = "abajo";
     },
     avanzarArriba: function(){
+      this.direccion = "arriba";
+      if(this.haChocadoConPared()) return;
+      if(this.seHaMordido()) return;
       const cabeza = this.cuerpo[0];
-      const hasChocado = cabeza[0]-1 == -1;
-      if(hasChocado){
-        this.hasChocadoConPared();
-        return;
-      }
       this.cuerpo.unshift([ cabeza[0]-1,cabeza[1] ] );
       this.dibujar();
       this.borrarUltima();
       this.cuerpo.pop();
-      this.direccion = "arriba";
     },
     borrarUltima: function(){
       const ultima = this.cuerpo[this.cuerpo.length-1];
@@ -100,10 +92,42 @@ window.onload = ()=> {
     detenerAvanzadoAutomatico: function(){
       clearInterval(this.avanceAutomatico);
     },
-    hasChocadoConPared: function(){
-      this.detenerAvanzadoAutomatico();
-      alert("Has perdido");
+    haChocadoConPared: function(){
+      const cabeza = this.cuerpo[0];
+      let hasChocado =
+        this.direccion == "derecha" ? cabeza[1]+1 == 10 :
+        this.direccion == "izquierda" ? cabeza[1]-1 == -1 :
+        this.direccion == "arriba" ? cabeza[0]-1 == -1 :
+        this.direccion == "abajo" ? cabeza[0]+1 == 10 : null;
+
+      if(hasChocado){
+        this.detenerAvanzadoAutomatico();
+        alert("Has Chocado");
+      }
+      return hasChocado;
     },
+    seHaMordido: function(){
+      seHaMordido = false;
+      let posibleMordidaEn = JSON.parse(JSON.stringify(this.cuerpo[0]));
+      if(this.direccion == "derecha")
+        posibleMordidaEn[1]++
+      else if(this.direccion == "izquierda")
+        posibleMordidaEn[1]--;
+      else if(this.direccion == "arriba")
+        posibleMordidaEn[0]--;
+      else if(this.direccion == "abajo")
+        posibleMordidaEn[0]++;
+      this.cuerpo.forEach((cuerpo, index) => {
+        if(index>0 & cuerpo.join("") == posibleMordidaEn.join("")){
+          seHaMordido = true;
+        }
+      });
+      if(seHaMordido){
+        this.detenerAvanzadoAutomatico();
+        alert("seHaMordido");
+      }
+      return seHaMordido;
+    }
   }
   // Inicializa El juego
   serpiente.dibujar();
