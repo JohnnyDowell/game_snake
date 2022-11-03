@@ -9,6 +9,8 @@ window.onload = ()=> {
     ],
     direccion: "abajo", // abajo - arriba- izquierda - derecha
     velocidad: 1000,
+    velocidadMin: 1000,
+    velocidadMax: 300,
     dibujar: function(){
       this.cuerpo.forEach((cuadro, indexCuadro) => {
         const renglon = cuadro[0];
@@ -97,7 +99,8 @@ window.onload = ()=> {
     },
     aumentarVelocidad: function(){
       this.detenerAvanzadoAutomatico();
-      this.velocidad-=10;
+      const range = this.velocidadMin-this.velocidadMax;
+      this.velocidad = this.velocidadMin - range*(this.cuerpo.length/100);
       console.log(this.velocidad);
       this.avanzarAutomaticamente();
     },
