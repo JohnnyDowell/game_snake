@@ -137,12 +137,22 @@ window.onload = ()=> {
       }
       return seHaMordido;
     },
+    haGanado: function(){
+      const haGanado = this.cuerpo.length == 100;
+      if(haGanado){
+        alert("ganaste");
+        this.detenerAvanzadoAutomatico();
+      }
+      return haGanado;
+    },
     comerManzana: ()=>{
       let comioManzana = false;
       if(this.manzana.ubicacion.join("") == this.serpiente.cuerpo[0].join("")){
         comioManzana = true;
-        this.manzana.ubicacionAleatoria();
-        this.serpiente.aumentarVelocidad();
+        if(!this.serpiente.haGanado()){
+          this.manzana.ubicacionAleatoria();
+          this.serpiente.aumentarVelocidad();
+        }
       }
       return comioManzana;
     }
@@ -150,8 +160,8 @@ window.onload = ()=> {
   manzana = {
     ubicacion: [],
     ubicacionAleatoria: function(){
-      let row = Math.floor(Math.random()*9) + 0;
-      let column = Math.floor(Math.random()*9) + 0;
+      const row = Math.floor(Math.random()*10) + 0;
+      const column = Math.floor(Math.random()*10) + 0;
       this.ubicacion = [row,column];
       this.interfiereConSerpiente() ? this.ubicacionAleatoria() : this.dibujar();
     },
