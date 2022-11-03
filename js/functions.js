@@ -8,6 +8,7 @@ window.onload = ()=> {
       [0,5],  // Cola
     ],
     direccion: "abajo", // abajo - arriba- izquierda - derecha
+    velocidad: 1000,
     dibujar: function(){
       this.cuerpo.forEach((cuadro, indexCuadro) => {
         const renglon = cuadro[0];
@@ -89,10 +90,16 @@ window.onload = ()=> {
           default:
             console.log("error");
         }
-      }, 1000);
+      }, this.velocidad);
     },
     detenerAvanzadoAutomatico: function(){
       clearInterval(this.avanceAutomatico);
+    },
+    aumentarVelocidad: function(){
+      this.detenerAvanzadoAutomatico();
+      this.velocidad-=10;
+      console.log(this.velocidad);
+      this.avanzarAutomaticamente();
     },
     haChocadoConPared: function(){
       const cabeza = this.cuerpo[0];
@@ -135,6 +142,7 @@ window.onload = ()=> {
       if(this.manzana.ubicacion.join("") == this.serpiente.cuerpo[0].join("")){
         comioManzana = true;
         this.manzana.ubicacionAleatoria();
+        this.serpiente.aumentarVelocidad();
       }
       return comioManzana;
     }
