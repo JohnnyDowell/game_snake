@@ -27,6 +27,8 @@ window.onload = ()=> {
       const cabeza = this.cuerpo[0];
       this.cuerpo.unshift([ cabeza[0],cabeza[1]+1 ] );
       this.dibujar();
+      this.detenerAvanzadoAutomatico();
+      this.avanzarAutomaticamente();
       if(!this.comerManzana()){
         this.borrarUltima();
         this.cuerpo.pop();
@@ -39,6 +41,8 @@ window.onload = ()=> {
       const cabeza = this.cuerpo[0];
       this.cuerpo.unshift([ cabeza[0],cabeza[1]-1 ] );
       this.dibujar();
+      this.detenerAvanzadoAutomatico();
+      this.avanzarAutomaticamente();
       if(!this.comerManzana()){
         this.borrarUltima();
         this.cuerpo.pop();
@@ -51,6 +55,8 @@ window.onload = ()=> {
       const cabeza = this.cuerpo[0];
       this.cuerpo.unshift([ cabeza[0]+1,cabeza[1] ] );
       this.dibujar();
+      this.detenerAvanzadoAutomatico();
+      this.avanzarAutomaticamente();
       if(!this.comerManzana()){
         this.borrarUltima();
         this.cuerpo.pop();
@@ -63,6 +69,8 @@ window.onload = ()=> {
       const cabeza = this.cuerpo[0];
       this.cuerpo.unshift([ cabeza[0]-1,cabeza[1] ] );
       this.dibujar();
+      this.detenerAvanzadoAutomatico();
+      this.avanzarAutomaticamente();
       if(!this.comerManzana()){
         this.borrarUltima();
         this.cuerpo.pop();
